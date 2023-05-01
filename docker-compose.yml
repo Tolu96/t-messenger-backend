@@ -1,0 +1,15 @@
+version: '3.1'
+
+services:
+
+  tMessenger-db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_USER: tolu
+      MYSQL_PASSWORD: 123456
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: tMessenger-db
