@@ -1,20 +1,23 @@
 package com.tolu.tMessenger.Users;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
+@NoArgsConstructor
 @Entity
+@Table(name = "users")
 public class Users {
     private @Id
-    @GeneratedValue long userId;
-    private String userName;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) long userId;
+    private String username;
     private String password;
 
-    public Users(String userName, String password) {
-        this.userName = userName;
+    public Users(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 }

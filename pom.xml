@@ -9,8 +9,8 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.tolu</groupId>
-    <artifactId>t-messenger</artifactId>
-    <version>0.0.1</version>
+    <artifactId>t-messenger-backend</artifactId>
+    <version>0.1</version>
     <name>t-messenger</name>
     <description>T-Messenger Backend</description>
     <properties>
@@ -50,6 +50,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>17.0.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
