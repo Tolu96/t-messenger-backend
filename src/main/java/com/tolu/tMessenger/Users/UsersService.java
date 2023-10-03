@@ -13,7 +13,6 @@ public class UsersService {
     private UsersRepository usersRepository;
 
     public Optional<Users> getUserById(Long userId) {
-
         if (usersRepository.existsById(userId)) {
             return usersRepository.findById(userId);
         } else {
