@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.tolu</groupId>
     <artifactId>t-messenger-backend</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
     <name>t-messenger</name>
     <description>T-Messenger Backend</description>
     <properties>
