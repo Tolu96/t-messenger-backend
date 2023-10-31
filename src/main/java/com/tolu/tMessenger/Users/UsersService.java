@@ -1,49 +1,53 @@
 package com.tolu.tMessenger.Users;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UsersService {
     @Autowired
     private UsersRepository usersRepository;
 
-    public Optional<Users> getUserById(Long userId) {
+    public List<Users> getAllUsers() {
+        return new ArrayList<>(usersRepository.findAll().stream().toList());
+    }
+
+
+    public Optional<Users> getUserById(UUID userId) {
         if (usersRepository.existsById(userId)) {
             return usersRepository.findById(userId);
         } else {
-            throw new IllegalArgumentException("User with id " + userId + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + userId + " does not exist");
         }
     }
 
     public Users createNewUser(Users newUser) {
-        List<Users> sameUserName =
-                usersRepository.findAll().stream().filter(c -> c.getUsername().equals(newUser.getUsername())).toList();
+        List<Users> sameUserName = usersRepository.findAll().stream().filter(c -> c.getUsername().equals(newUser.getUsername())).toList();
         if (sameUserName.isEmpty()) {
             return usersRepository.save(newUser);
         } else {
-            throw new IllegalStateException("Username " + newUser.getUsername() + " already exists");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username " + newUser.getUsername() + " already exists");
         }
     }
 
-    public void deleteUser(Long userId) {
+    public void deleteUser(UUID userId) {
         boolean exists = usersRepository.existsById(userId);
         if (!exists) {
-            throw new IllegalStateException("User with id " + userId + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + userId + " does not exist");
         } else {
             usersRepository.deleteById(userId);
         }
     }
 
     @Transactional
-    public void updateUser(Long userId, Users usersDetails) {
+    public void updateUser(UUID userId, Users usersDetails) {
 
-        Users updatedUser =
-                usersRepository.findById(userId).orElseThrow(() -> new IllegalStateException("User with " + "UserId " + userId + " does not exist"));
+        Users updatedUser = usersRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with " + "UserId " + userId + " does not exist"));
 
         String oldUsername = updatedUser.getUsername();
         String oldPassword = updatedUser.getPassword();
@@ -56,7 +60,7 @@ public class UsersService {
             if (newUsername.length() > 3 && !newUsername.equals(oldUsername)) {
                 updatedUser.setUsername(newUsername);
             } else {
-                throw new IllegalArgumentException("Could not change Username " + oldUsername + " into " + newUsername);
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Could not change Username " + oldUsername + " into " + newUsername);
             }
         }
 
@@ -64,7 +68,7 @@ public class UsersService {
             if (newPassword.length() > 8 && !newPassword.equals(oldPassword)) {
                 updatedUser.setPassword(newPassword);
             } else {
-                throw new IllegalArgumentException("Could not Change Password");
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Could not Change Password");
             }
         }
     }

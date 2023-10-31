@@ -2,9 +2,9 @@ package com.tolu.tMessenger.Users;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -12,7 +12,7 @@ import lombok.Setter;
 @Table(name = "users")
 public class Users {
     private @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) long userId;
+    @GeneratedValue(strategy = GenerationType.UUID) UUID userId;
     private String username;
     private String password;
 
